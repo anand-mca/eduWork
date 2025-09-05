@@ -71,7 +71,9 @@ def student_registration(request):
 
 
 def student_profile(request):
-    logged_in_email = "aparna@gmail.com"
+    if "username" not in request.session:
+        return redirect("login")
+    logged_in_email ="aparna@gmail.com"
     try:
         student = Student.objects.get(email_id=logged_in_email)
     except Student.DoesNotExist:

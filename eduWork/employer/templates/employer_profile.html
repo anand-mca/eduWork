@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employer Profile</title>
+</head>
+<body>
+    <h1>My Profile</h1>
+
+    {% if employer %}
+        <p><strong>ID:</strong> {{ employer.employer_id }}</p>
+        <p><strong>Name:</strong> {{ employer.o_name }}</p>
+        <p><strong>Shop Name:</strong> {{ employer.shop_name }}</p>
+        <p><strong>Category:</strong> {{ employer.category }}</p>
+        <p><strong>Phone:</strong> {{ employer.phone_no }}</p>
+        <p><strong>Email:</strong> {{ employer.email_id }}</p>
+        <p><strong>Address:</strong> {{ employer.address }}</p>
+        <p><strong>Map Location:</strong> {{ employer.map_loc }}</p>
+
+        {% if employer.photo %}
+            <img src="{{ employer.photo }}" alt="Profile Photo" width="150">
+        {% endif %}
+    {% else %}
+        <p>No employer data found.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -275,10 +276,10 @@
             color: #6b7280;
         }
 
-        /* .signup-section {
+         .signup-section {
             margin-top: 1.5rem;
             text-align: center;
-        } */
+        } 
 
         .signup-link {
             font-weight: 500;
@@ -288,7 +289,7 @@
         }
 
         .signup-link:hover {
-            color: #1d4ed8;
+            color: #d81d93ff;
         }
 
         .user-types {
@@ -306,7 +307,7 @@
 
         .user-type-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(1, 1fr);
             gap: 0.5rem;
         }
 
@@ -351,6 +352,23 @@
                 padding: 1.5rem;
             }
         }
+     .login-link-section {
+            margin-top: 1.5rem;
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .login-link {
+            font-weight: 500;
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .login-link:hover {
+            color: #1d4ed8;
+        }
     </style>
 </head>
 <body>
@@ -373,9 +391,13 @@
                 <h2 class="login-title">Welcome</h2>
                 <p class="login-subtitle">Sign in to your account</p>
             </div>
+            {% if error %}
+                 <p style="color: red; text-align:center;">{{ error }}</p>
+            {% endif %}
 
-            <form method="post">
+            <form id="loginForm" action="" method="POST">
                 {% csrf_token %}
+
                 <!-- Username Field -->
                 <div class="form-group">
                     <label for="username" class="form-label">Username</label>
@@ -452,9 +474,8 @@
             <div class="user-types">
                 <p class="user-types-label">Create an account as:</p>
                 <div class="user-type-buttons">
-                    <button type="button" class="user-type-button" onclick="window.location.href='student_registration.html'">Student</button>&nbsp;&nbsp;
-                    <button type="button" class="user-type-button" onclick="window.location.href='employer_registration.html'">Employer</button>
-                </div>
+                <a href="/employer/register/" class="signup-link">Employer</a>
+            </div>
             </div>
         </div>
 
@@ -464,7 +485,7 @@
         </div>
     </div>
 
-    <script>
+    {% comment %} <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -498,6 +519,6 @@
             console.log('Login attempt:', { username, password });
             // Handle login logic here
         });
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>
