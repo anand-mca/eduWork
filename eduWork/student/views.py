@@ -59,8 +59,8 @@ def student_registration(request):
         # Save login credentials (email = username)
         with connection.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO login (username, password) VALUES (%s, %s)",
-                [email_id, password]
+                "INSERT INTO login (username, password, type) VALUES (%s, %s, %s)",
+                [email_id, password, "student"]
             )
 
         return redirect("student_registration")  # reloads form
@@ -73,12 +73,12 @@ def student_registration(request):
 def student_profile(request):
     if "username" not in request.session:
         return redirect("login")
-    logged_in_email ="aparna@gmail.com"
+    logged_in_email = request.session.get("username")
     try:
         student = Student.objects.get(email_id=logged_in_email)
     except Student.DoesNotExist:
         student = None
-    return render(request, 'student_profile.html', {'student': student})
+    return render(request, 'student/student_profile.html', {'student': student})
 
 
 def login_view(request):
@@ -110,3 +110,12 @@ def student_home(request):
         return redirect("login")  # redirect if not logged in
 
     return render(request, "student/student_home.html")
+
+from .models import Announcement
+
+def student_announcement(request):
+    if "username" not in request.session:
+        return redirect("login")
+    announcements = Announcement.objects.all()
+    return render(request, "student/student_announcement.html", {"announcements": announcements})
+

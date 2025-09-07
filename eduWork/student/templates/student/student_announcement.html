@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Announcements</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 60px 20px 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(30, 58, 138, 0.1);
+        }
+
+        .announcements-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .announcement-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .announcement-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .announcement-description {
+            font-size: 1rem;
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            min-height: 3rem;
+        }
+
+        .announcement-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: auto;
+            padding-top: 0.75rem;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .date-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .date-time svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .no-announcements {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 2px dashed #d1d5db;
+        }
+
+        .no-announcements h3 {
+            color: #6b7280;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-announcements p {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 15px 20px;
+            }
+            
+            h1 {
+                font-size: 1.875rem;
+            }
+            
+            .announcement-card {
+                padding: 20px;
+            }
+            
+            .announcement-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'student_home'%}" class="back-button">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Dashboard
+        </a>
+
+        <h1>Announcements</h1>
+
+        {% if announcements %}
+        <div class="announcements-grid">
+            {% for item in announcements %}
+            <div class="announcement-card">
+                <h3 class="announcement-title">{{ item.title }}</h3>
+                <div class="announcement-description">
+                    {{ item.description }}
+                </div>
+                <div class="announcement-meta">
+                    <div class="date-time">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        {{ item.date }}
+                    </div>
+                    <div class="date-time">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        {{ item.time }}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-announcements">
+                <h3>No announcements available</h3>
+                <p>Check back later for updates and important information.</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-announcements">
+            <h3>No announcements available</h3>
+            <p>Check back later for updates and important information.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

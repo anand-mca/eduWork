@@ -17,6 +17,17 @@ class Student(models.Model):
     class Meta:
         db_table='student'
 
+class Announcement(models.Model):
+    announcement_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=500)
+    date = models.DateField()
+    time = models.TimeField()
+
+    class Meta:
+        db_table = 'announcement'
+
+from django.db import models
 
 
 

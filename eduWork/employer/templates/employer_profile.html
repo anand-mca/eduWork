@@ -1,4 +1,419 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - EduWork</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            color: #1f2937;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 0.75rem;
+            color: white;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-photo-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            height: fit-content;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 4px solid #3b82f6;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+
+        .no-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 4px solid #3b82f6;
+            color: #2563eb;
+            font-size: 4rem;
+        }
+
+        .photo-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .profile-details {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .details-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .details-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .details-title-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 0.75rem;
+            color: #2563eb;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: #1f2937;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .no-data-message {
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        .no-data-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: #d97706;
+        }
+
+        .no-data-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-data-description {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .profile-photo,
+            .no-photo {
+                width: 150px;
+                height: 150px;
+            }
+
+            .no-photo {
+                font-size: 3rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .profile-photo-section,
+            .profile-details {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h1 class="page-title">My Profile</h1>
+            </div>
+            <a href="{%url 'employer_home' %}" class="back-button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Home Page
+            </a>
+        </header>
+
+        <!-- Profile Content -->
+        <main>
+            {% if employer %}
+                <div class="profile-container">
+                    <!-- Profile Photo Section -->
+                    <div class="profile-photo-section">
+                        {% if employer.photo %}
+                            <img src="{{ employer.photo }}" alt="Profile Photo" class="profile-photo">
+                        {% else %}
+                            <div class="no-photo">
+                                <svg width="80" height="80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                        <p class="photo-label">Profile Photo</p>
+                    </div>
+
+                    <!-- Profile Details Section -->
+                    <div class="profile-details">
+                        <div class="details-header">
+                            <h2 class="details-title">
+                                <div class="details-title-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                Personal Information
+                            </h2>
+                        </div>
+                        
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Student ID</span>
+                                <span class="detail-value">{{ employer.employer_id }}</span>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Name</span>
+                                <span class="detail-value">{{ employer.o_name }}</span>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Shop Name</span>
+                                <span class="detail-value">{{ employer.shop_name }}</span>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Category</span>
+                                <span class="detail-value">{{ employer.category }}</span>
+                            </div>
+                            
+                            {% comment %} <div class="detail-item">
+                                <span class="detail-label">Primary Skill</span>
+                                <span class="detail-value">{{ student.skill }}</span>
+                            </div> {% endcomment %}
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Location</span>
+                                <span class="detail-value">{{ employer.map_loc }}</span>
+                            </div>
+                            
+                            {% comment %} <div class="detail-item">
+                                <span class="detail-label">Gender</span>
+                                <span class="detail-value">{{ student.gender }}</span>
+                            </div> {% endcomment %}
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Address</span>
+                                <span class="detail-value">{{ employer.address }}</span>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Phone Number</span>
+                                <span class="detail-value">{{ employer.phone_no }}</span>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-label">Email Address</span>
+                                <span class="detail-value">{{ employer.email_id }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!-- No Data Message -->
+                <div class="no-data-message">
+                    <div class="no-data-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="no-data-title">No Profile Data Found</h3>
+                    <p class="no-data-description">Student profile information is currently unavailable. Please contact support if this issue persists.</p>
+                </div>
+            {% endif %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">© 2025 EduWork. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+
+
+
+
+{% comment %} <!DOCTYPE html>
 <html>
 <head>
     <title>Employer Profile</title>
@@ -23,4 +438,7 @@
         <p>No employer data found.</p>
     {% endif %}
 </body>
-</html>
+</html> {% endcomment %}
+
+
+
