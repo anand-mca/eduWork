@@ -29,6 +29,23 @@ class Announcement(models.Model):
 
 from django.db import models
 
+class Jobs(models.Model):
+    job_post_id = models.AutoField(primary_key=True)
+    post_title=models.CharField(max_length=45)
+    post_description=models.CharField(max_length=500)
+    post_date=models.DateField()
+    shop_name=models.CharField(max_length=45)
+    phone_no=models.CharField(max_length=45)
+    vacancy=models.IntegerField()
+    map_loc=models.CharField(max_length=200)
+    start_date=models.DateField()
+    end_date=models.DateField()
+    student_id=models.CharField(max_length=45)
+    salary=models.CharField(max_length=5)
+
+    class Meta:
+        db_table = 'job_post'
+
 
 
     

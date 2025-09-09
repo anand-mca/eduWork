@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .models import Student
+from .models import Jobs, Student
 
 
 from django.shortcuts import render, redirect
@@ -118,4 +118,10 @@ def student_announcement(request):
         return redirect("login")
     announcements = Announcement.objects.all()
     return render(request, "student/student_announcement.html", {"announcements": announcements})
+
+def apply_job(request):
+    if "username" not in request.session:
+        return redirect("login")
+    job_post = Jobs.objects.all()  # Replace JobPost with your actual model name
+    return render(request, 'student/apply_job.html', {'job_post': job_post})
 
