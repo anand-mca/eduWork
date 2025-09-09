@@ -135,30 +135,30 @@ def employer_announcement(request):
         # })
     return render(request, "employer/employer_announcement.html")
 
-def post_job(request):
-    if "username" not in request.session:
-        return redirect("login")
-    if request.method == "POST":
-        if "username" not in request.session:
-            return redirect("login")
-        employer_id = request.session.get("employer_id")
-        shop_name = request.session.get("shop_name")
-        address = request.session.get("address")
-        phone_no = request.session.get("phone_no")
-        map_loc = request.session.get("map_loc")
-        job_title = request.POST.get("job_title")
-        job_description = request.POST.get("job_description")
-        job_vacancy = request.POST.get("vacancy")
-        start_date = request.POST.get("start_date")
-        end_date = request.POST.get("end_date")
-        salary = request.POST.get("salary")
-        post_date = datetime.now().date().strftime("%Y-%m-%d")
+# def post_job(request):
+#     if "username" not in request.session:
+#         return redirect("login")
+#     if request.method == "POST":
+#         if "username" not in request.session:
+#             return redirect("login")
+#         employer_id = request.session.get("employer_id")
+#         shop_name = request.session.get("shop_name")
+#         address = request.session.get("address")
+#         phone_no = request.session.get("phone_no")
+#         map_loc = request.session.get("map_loc")
+#         job_title = request.POST.get("job_title")
+#         job_description = request.POST.get("job_description")
+#         job_vacancy = request.POST.get("vacancy")
+#         start_date = request.POST.get("start_date")
+#         end_date = request.POST.get("end_date")
+#         salary = request.POST.get("salary")
+#         post_date = datetime.now().date().strftime("%Y-%m-%d")
 
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "INSERT INTO job_post (employer_id, post_title, post_description, post_date, shop_name, address, phone_no, vacancy, map_loc, start_date, end_date, salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                [employer_id, job_title, job_description, post_date, shop_name, address, phone_no, job_vacancy, map_loc, start_date, end_date, salary]
-            )
-        return redirect("post_job")
+#         with connection.cursor() as cursor:
+#             cursor.execute(
+#                 "INSERT INTO job_post (employer_id, post_title, post_description, post_date, shop_name, address, phone_no, vacancy, map_loc, start_date, end_date, salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+#                 [employer_id, job_title, job_description, post_date, shop_name, address, phone_no, job_vacancy, map_loc, start_date, end_date, salary]
+#             )
+#         return redirect("post_job")
 
-    return render(request, "employer/post_job.html")
+#     return render(request, "employer/post_job.html")
