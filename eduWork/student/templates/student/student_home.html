@@ -1,0 +1,472 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Student Home</title>
+</head>
+<body>
+    <h2>Welcome {{ request.session.username }} 🎉</h2>
+    <p>You are logged in successfully.</p>
+
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EduWork</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 0.75rem;
+            color: white;
+        }
+
+        .welcome-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .student-name {
+            font-size: 1.125rem;
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .logout-button {
+            background: linear-gradient(135deg, #2563eb, #2563eb);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+        }
+
+        .logout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            color: #2563eb;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .primary-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            text-align: center;
+        }
+
+        .primary-card .card-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .primary-card .card-title,
+        .primary-card .card-description {
+            color: white;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .welcome-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .primary-card {
+                grid-column: 1;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="welcome-section">
+                <div class="logo">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="welcome-text">
+                    <h1 class="welcome-title">Welcome</h1>
+                    <span>{{ request.session.username }}</span>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}">
+            <button class="logout-button">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                    <path d="M16 17l5-5-5-5M19.8 12H9M10 3H4v18h6"/>
+                </svg>
+                Logout
+            </button></a>
+        </header>
+
+        <!-- Dashboard Grid -->
+        <main class="dashboard-grid">
+            <!-- Primary Action Job application -->
+            <a href="{% url 'apply_job' %}" class="feature-card primary-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Apply Jobs</h3>
+                <p class="card-description">Find perfect and convinient jobs for yourself. A wide range of oppurtunities waiting for you </p>
+            </a>
+
+            <!-- Profile Card -->
+            <a href="{% url 'student_profile' %}" class="feature-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Profile</h3>
+                <p class="card-description">View and update your personal information and skills</p>
+            </a>
+
+            <!-- Job Announcement card -->
+            <a href="{% url 'student_announcement'%}" class="feature-card">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Announcements</h3>
+                <p class="card-description">Get notified, be updated about the latest oppurtunities around you</p>
+            </a>
+
+            <!-- Job Contract Card -->
+            <a href="#" class="feature-card" onclick="viewJobContract()">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Job Contract</h3>
+                <p class="card-description">View active contracts and employment agreements</p>
+            </a>
+
+            <!-- Job History Card -->
+            <a href="#" class="feature-card" onclick="viewJobHistory()">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Job History</h3>
+                <p class="card-description">Review your past work experiences and completed jobs</p>
+            </a>
+
+            <!-- Schedule Academy Card -->
+            <a href="#" class="feature-card" onclick="scheduleAcademy()">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Schedule Academy</h3>
+                <p class="card-description">Book training sessions and skill development courses</p>
+            </a>
+
+            <!-- View Feedback Card -->
+            <a href="#" class="feature-card" onclick="viewFeedback()">
+                <div class="card-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">User Feedback</h3>
+                <p class="card-description">Provide your valuable feedbacks so that we can improve</p>
+            </a>
+        </main>
+
+        Quick Stats Section
+        <section class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Active Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Completed Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Academy Hours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.0</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">© 2025 EduWork. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation functions
+        function viewProfile() {
+            console.log('Navigating to Profile');
+            // Add navigation logic here
+            alert('Profile page coming soon!');
+        }
+
+        function announceForJobs() {
+            console.log('Announcing for Jobs');
+            // Add job announcement logic here
+            alert('Job announcement feature coming soon!');
+        }
+
+        function viewJobApplications() {
+            console.log('Viewing Job Applications');
+            // Add job applications logic here
+            alert('Job applications page coming soon!');
+        }
+
+        function viewJobContract() {
+            console.log('Viewing Job Contract');
+            // Add job contract logic here
+            alert('Job contract page coming soon!');
+        }
+
+        function viewJobHistory() {
+            console.log('Viewing Job History');
+            // Add job history logic here
+            alert('Job history page coming soon!');
+        }
+
+        function scheduleAcademy() {
+            console.log('Scheduling Academy');
+            // Add academy scheduling logic here
+            alert('Academy scheduling coming soon!');
+        }
+
+        function viewFeedback() {
+            console.log('Viewing Feedback');
+            // Add feedback logic here
+            alert('Feedback page coming soon!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                console.log('User logged out');
+                // Add logout logic here
+                alert('Logout functionality coming soon!');
+            }
+        }
+
+        // Dynamic student name - replace this with actual data
+        document.addEventListener('DOMContentLoaded', function() {
+            // You can replace this with actual student data
+            const studentName = 'John Doe'; // This would come from your backend/session
+            document.querySelector('.student-name').textContent = studentName;
+        });
+
+        // Card interaction effects
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.borderColor = '#3b82f6';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.borderColor = '#e5e7eb';
+            });
+        });
+    </script>
+</body>
+</html>

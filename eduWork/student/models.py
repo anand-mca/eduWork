@@ -16,3 +16,47 @@ class Student(models.Model):
 
     class Meta:
         db_table='student'
+
+class Announcement(models.Model):
+    announcement_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=500)
+    date = models.DateField()
+    time = models.TimeField()
+
+    class Meta:
+        db_table = 'announcement'
+
+from django.db import models
+
+class Jobs(models.Model):
+    job_post_id = models.AutoField(primary_key=True)
+    post_title=models.CharField(max_length=45)
+    post_description=models.CharField(max_length=500)
+    post_date=models.DateField()
+    shop_name=models.CharField(max_length=45)
+    phone_no=models.CharField(max_length=45)
+    vacancy=models.IntegerField()
+    map_loc=models.CharField(max_length=200)
+    start_date=models.DateField()
+    end_date=models.DateField()
+    student_id=models.CharField(max_length=45)
+    salary=models.CharField(max_length=5)
+
+    class Meta:
+        db_table = 'job_post'
+
+class Contract(models.Model):
+    contract_id = models.AutoField(primary_key=True)
+    post_id = models.CharField(max_length=45)
+    student_id = models.CharField(max_length=45)
+    employer_id = models.CharField(max_length=45)
+    status = models.CharField(max_length=45)
+
+    salary = models.CharField(max_length=5)
+    
+    class Meta:
+        db_table = 'contract'
+
+
+    

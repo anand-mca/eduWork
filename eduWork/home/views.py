@@ -15,4 +15,3 @@ def contract (request):
 
 def job_history (request):
     return HttpResponse("job history page")
-
