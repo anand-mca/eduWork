@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Jobs</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            background: #3730a3;
+            transform: translateY(-1px);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .jobs-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .job-card {
+            background: white;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            text-decoration: underline;
+            text-decoration-color: #3b82f6;
+        }
+
+        .post-description {
+            color: #374151;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .job-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .date-range {
+            grid-column: span 2;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .vacancy-salary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .vacancy, .salary {
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .vacancy-value {
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .vacancy-low {
+            color: #dc2626;
+        }
+
+        .salary-value {
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .apply-button {
+            background: #3b82f6;
+            color: white;
+            border: 2px solid #3b82f6;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-button:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .apply-button:disabled {
+            background: #9ca3af;
+            border-color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .apply-button.applied {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .post-date {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .success-message.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .job-card {
+                padding: 1.5rem;
+            }
+            
+            .job-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-range {
+                grid-column: span 1;
+            }
+            
+            .vacancy-salary {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'student_home' %}" class="back-button">
+            ← Back to Dashboard
+        </a>
+        
+        <h1 class="page-title">Apply Jobs</h1>
+        {% if jobs %}   
+        <div class="jobs-grid">
+            {% for item in jobs %}
+            <!-- Job Card 1 -->
+            <div class="job-card">
+                <div class="post-title">{{ item.post_title}}</div>
+                <div class="post-description">
+                    {{ item.post_description }}
+                </div>
+                
+                <div class="job-info">
+                    <div class="info-item">
+                        <span class="info-label">Shop name :</span> {{ item.shop_name }}
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone no :</span> {{item.phone_no}}
+                    </div>
+                </div>
+                
+                <div class="date-range">
+                    <span class="info-label">Start Date:</span>{{item.start_date}} <span class="info-label">to End Date:</span> {{item.end_date}}
+                </div>
+                
+                <div class="vacancy-salary">
+                    <div class="vacancy">
+                        <span class="info-label">Vacancy : </span> <span class="vacancy-value" data-vacancy="5">{{ item.vacancy }}</span>
+                    </div>
+                    <div class="salary">
+                        <span class="info-label">Salary:</span> <span class="salary-value">{{item.salary}}</span>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <div class="post-date">Post Date: {{item.post_date}}</div>
+                   <form method="post" action="{% url 'apply_job' job_id=job.job_id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="apply-button">Apply Now</button>
+                    </form>
+        
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <strong>Application Submitted!</strong> Your application has been sent successfully.
+    </div>
+
+    {% comment %} <script>
+        function applyForJob(button, jobId) {
+            // Get the vacancy element for this job
+            const jobCard = button.closest('.job-card');
+            const vacancyElement = jobCard.querySelector('[data-vacancy]');
+            let currentVacancy = parseInt(vacancyElement.getAttribute('data-vacancy'));
+
+            // Check if vacancy is available
+            if (currentVacancy <= 0) {
+                alert('Sorry, no positions are available for this job.');
+                button.disabled = true;
+                button.textContent = 'No Positions Available';
+                return;
+            }
+
+            // Confirm application
+            if (confirm('Are you sure you want to apply for this position?')) {
+                // Decrement vacancy
+                currentVacancy--;
+                vacancyElement.setAttribute('data-vacancy', currentVacancy);
+                
+                // Update the display
+                const vacancyText = currentVacancy === 1 ? '1 position' : `${currentVacancy} positions`;
+                vacancyElement.textContent = vacancyText;
+
+                // Update styling based on remaining positions
+                if (currentVacancy <= 1) {
+                    vacancyElement.classList.add('vacancy-low');
+                    vacancyElement.classList.remove('vacancy-value');
+                }
+
+                // Update button
+                if (currentVacancy === 0) {
+                    button.disabled = true;
+                    button.textContent = 'No Positions Available';
+                    vacancyElement.textContent = 'No positions available';
+                } else {
+                    button.textContent = 'Applied';
+                    button.classList.add('applied');
+                    button.disabled = true;
+                }
+
+                // Show success message
+                showSuccessMessage();
+
+                // Here you would typically send an AJAX request to your backend
+                // to update the database with the application and decremented vacancy
+            }
+        }
+
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Apply Jobs page loaded successfully');
+        });
+    </script> {% endcomment %}
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Job</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 60px 20px 40px;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(30, 58, 138, 0.1);
+        }
+
+        .subtitle {
+            color: #2563eb;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .job-posting-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-posting-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #374151;
+            background: #ffffff;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .vacancy-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .vacancy-input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .vacancy-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .vacancy-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            width: 15px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+            color: #374151;
+        }
+
+        .vacancy-btn:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .date-group {
+            flex: 1;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
+
+        .info-box {
+            margin-top: 30px;
+            background-color: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            border-radius: 12px;
+            padding: 16px 20px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .info-box::before {
+            content: "💼";
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 15px 20px;
+            }
+            
+            h1 {
+                font-size: 1.875rem;
+            }
+            
+            .job-posting-container {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .vacancy-container {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-posting-container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Jobs</h1>
+    <p class="subtitle">Create new job opportunities for students</p>
+
+    <div class="job-posting-container">
+        <form id="jobPostingForm" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="jobTitle">Job Title</label>
+                <input type="text" id="jobTitle" name="job_title" placeholder="Enter job title" required />
+            </div>
+
+            <div class="form-group">
+                <label for="jobDescription">Job Description</label>
+                <textarea id="jobDescription" name="job_description" placeholder="Describe the job responsibilities, requirements, and qualifications" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vacancy">Vacancy</label>
+                <div class="vacancy-container">
+                    <input type="number" id="vacancy" name="vacancy" class="vacancy-input" value="0" min="0" max="999" required />
+                    <!-- <div class="vacancy-controls">
+                        <button type="button" class="vacancy-btn" onclick="incrementVacancy()">▲</button>
+                        <button type="button" class="vacancy-btn" onclick="decrementVacancy()">▼</button>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="start_date" required />
+                </div><br><br>To
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" name="end_date" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="salary">Salary</label>
+                <input type="text" id="salary" name="salary" placeholder="e.g., ₹500 per day" required />
+            </div>
+
+            <button type="submit" class="submit-btn">Post Job</button>
+
+            <a href="#" class="back-button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Home Page
+            </a>
+        </form>
+    </div>
+
+    <div class="info-box">
+        Provide detailed job information to attract the right candidates. Make sure to include clear requirements and expectations.
+    </div>
+
+    <!-- <script>
+        function incrementVacancy() {
+            const input = document.getElementById('vacancy');
+            const currentValue = parseInt(input.value) || 0;
+            if (currentValue < 999) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        function decrementVacancy() {
+            const input = document.getElementById('vacancy');
+            const currentValue = parseInt(input.value) || 0;
+            if (currentValue > 0) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').setAttribute('min', today);
+            document.getElementById('endDate').setAttribute('min', today);
+            
+            // Update end date minimum when start date changes
+            document.getElementById('startDate').addEventListener('change', function() {
+                document.getElementById('endDate').setAttribute('min', this.value);
+            });
+        });
+
+        // Form validation
+        document.getElementById('jobPostingForm').addEventListener('submit', function(e) {
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            
+            if (endDate <= startDate) {
+                e.preventDefault();
+                alert('End date must be after start date.');
+                return false;
+            }
+            
+            const vacancy = parseInt(document.getElementById('vacancy').value);
+            if (vacancy <= 0) {
+                e.preventDefault();
+                alert('Vacancy must be greater than 0.');
+                return false;
+            }
+        });
+    </script> -->
+</body>
+</html>
