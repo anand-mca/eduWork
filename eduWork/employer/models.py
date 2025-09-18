@@ -1,4 +1,6 @@
 from django.db import models
+from student.models import Jobs
+
 class Employer(models.Model):
     employer_id=models.AutoField(primary_key=True)
     o_name=models.CharField(max_length=45)
@@ -12,3 +14,4 @@ class Employer(models.Model):
 
     class Meta:
         db_table='employer'
+

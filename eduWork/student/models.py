@@ -46,6 +46,17 @@ class Jobs(models.Model):
     class Meta:
         db_table = 'job_post'
 
+class Contract(models.Model):
+    contract_id = models.AutoField(primary_key=True)
+    post_id = models.CharField(max_length=45)
+    student_id = models.CharField(max_length=45)
+    employer_id = models.CharField(max_length=45)
+    status = models.CharField(max_length=45)
+
+    salary = models.CharField(max_length=5)
+    
+    class Meta:
+        db_table = 'contract'
 
 
     

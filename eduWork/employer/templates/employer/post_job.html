@@ -317,12 +317,19 @@
 
             <button type="submit" class="submit-btn">Post Job</button>
 
+            <a href="{% url 'view_applications' %}" class="back-button">
+                View Applications
+            </a> 
+
+            <br><br>
+            
             <a href="{% url 'employer_home' %}" class="back-button">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
                 Back to Home Page
             </a>
+            
         </form>
     </div>
 
@@ -330,53 +337,6 @@
         Provide detailed job information to attract the right candidates. Make sure to include clear requirements and expectations.
     </div>
 
-    <!-- <script>
-        function incrementVacancy() {
-            const input = document.getElementById('vacancy');
-            const currentValue = parseInt(input.value) || 0;
-            if (currentValue < 999) {
-                input.value = currentValue + 1;
-            }
-        }
-
-        function decrementVacancy() {
-            const input = document.getElementById('vacancy');
-            const currentValue = parseInt(input.value) || 0;
-            if (currentValue > 0) {
-                input.value = currentValue - 1;
-            }
-        }
-
-        // Set minimum date to today
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('startDate').setAttribute('min', today);
-            document.getElementById('endDate').setAttribute('min', today);
-            
-            // Update end date minimum when start date changes
-            document.getElementById('startDate').addEventListener('change', function() {
-                document.getElementById('endDate').setAttribute('min', this.value);
-            });
-        });
-
-        // Form validation
-        document.getElementById('jobPostingForm').addEventListener('submit', function(e) {
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
-            
-            if (endDate <= startDate) {
-                e.preventDefault();
-                alert('End date must be after start date.');
-                return false;
-            }
-            
-            const vacancy = parseInt(document.getElementById('vacancy').value);
-            if (vacancy <= 0) {
-                e.preventDefault();
-                alert('Vacancy must be greater than 0.');
-                return false;
-            }
-        });
-    </script> -->
+    
 </body>
 </html>

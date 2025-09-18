@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -275,8 +283,15 @@
                     <div class="post-date">Post Date: {{item.post_date}}</div>
                 </div>
                 <div><br>
-                    <button class="apply-button" type="submit">
-                        Apply Now</button>
+                    <form method="post" action="{% url 'apply_job' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="job_id" value="{{ item.job_post_id }}">
+                        <button class="apply-button" type="submit"
+                        {% if item.vacancy <= 0 %}disabled{% endif %}>
+                        {% if item.vacancy <= 0 %}No Positions Available{% else %}Apply Now{% endif %}
+                        </button>
+
+                    </form>
                 </div>
             </div>
             {% empty %}

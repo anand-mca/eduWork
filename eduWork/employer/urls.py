@@ -9,4 +9,7 @@ urlpatterns = [
     path("logout/", views.emp_logout_view, name="employer_logout"),
     path("announcement/", views.employer_announcement, name="employer_announcement"),
     path("post_job/", views.post_job, name="post_job"),
-]
+    path("view_applications/", views.view_applications, name="view_applications"),
+    path("delete_job_post/<int:job_post_id>/", views.delete_job_post, name="delete_job_post"),
+
+    ]
