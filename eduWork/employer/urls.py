@@ -11,5 +11,8 @@ urlpatterns = [
     path("post_job/", views.post_job, name="post_job"),
     path("view_applications/", views.view_applications, name="view_applications"),
     path("delete_job_post/<int:job_post_id>/", views.delete_job_post, name="delete_job_post"),
+    path("accept_application/", views.accept_application, name="accept_application"),
+    path("view_contract/", views.view_contract, name="view_contract"),
+    path("terminate_contract/<int:contract_id>/", views.terminate_contract, name="terminate_contract"),
 
     ]

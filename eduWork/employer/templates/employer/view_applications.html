@@ -410,7 +410,7 @@
                                         <button class="history-btn" type="submit">History</button>
                                     </form>
                                     
-                                    <form method="post" action="#" style="display: inline;">
+                                    <form method="post" action="{% url 'accept_application' %}" style="display: inline;">
                                         {% csrf_token %}
                                         <input type="hidden" name="application_id" value="{{ applicant.application_id }}">
                                         <button class="accept-btn {% if applicant.is_accepted %}accepted{% endif %}" 

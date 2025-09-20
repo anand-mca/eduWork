@@ -328,7 +328,7 @@
             </a>
 
             <!-- Job Contract Card -->
-            <a href="#" class="feature-card" onclick="viewJobContract()">
+            <a href="{% url 'student_contract'%}" class="feature-card" onclick="viewJobContract()">
                 <div class="card-icon">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -418,11 +418,11 @@
             alert('Job applications page coming soon!');
         }
 
-        function viewJobContract() {
+        {% comment %} function viewJobContract() {
             console.log('Viewing Job Contract');
             // Add job contract logic here
             alert('Job contract page coming soon!');
-        }
+        } {% endcomment %}
 
         function viewJobHistory() {
             console.log('Viewing Job History');

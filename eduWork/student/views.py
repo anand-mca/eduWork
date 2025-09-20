@@ -13,6 +13,8 @@ from django.db import connection
 from .models import Student
 
 from .models import Jobs, Student, Announcement
+# Import Contract model from employer app
+from employer.models import Contract
 
 
 def student_registration(request):
@@ -29,7 +31,7 @@ def student_registration(request):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirmPassword")
 
-        # Handle skills (checkboxes → comma separated string)
+        # Handle skills (checkboxes â†' comma separated string)
         skills = request.POST.getlist("skills")
         skills_str = ", ".join(skills)
 
@@ -149,7 +151,7 @@ def apply_job(request):
 
         return redirect("apply_job")  # reload page after applying
 
-    # GET request → show filtered jobs based on student skills
+    # GET request â†' show filtered jobs based on student skills
     try:
         # Get current student's skills
         student = Student.objects.get(email_id=logged_in_email)
@@ -215,3 +217,61 @@ def apply_job(request):
         messages.warning(request, "Unable to filter jobs by skills. Showing all available jobs.")
         job_post = Jobs.objects.filter(vacancy__gt=0)
         return render(request, "student/apply_job.html", {"job_post": job_post})
+
+
+def view_contract(request):
+    """
+    View to display all contracts for the logged-in student
+    """
+    if "username" not in request.session:
+        return redirect("login")
+    
+    logged_in_email = request.session.get("username")
+    
+    try:
+        # Get the current student's information
+        student = Student.objects.get(email_id=logged_in_email)
+        student_full_name = f"{student.f_name} {student.l_name}"
+        
+        # Query contracts for this student using raw SQL to join with job_post table for dates
+        with connection.cursor() as cursor:
+            query = """
+                SELECT c.contract_id, c.post_id, c.student_id, c.employer_id, 
+                       c.status, c.salary, c.student_name, c.shop_name,
+                       jp.start_date, jp.end_date
+                FROM contract c
+                LEFT JOIN job_post jp ON c.post_id = jp.job_post_id
+                WHERE c.student_id = %s OR c.student_name = %s
+                ORDER BY c.contract_id DESC
+            """
+            cursor.execute(query, [logged_in_email, student_full_name])
+            contract_data = cursor.fetchall()
+            
+            # Convert to list of dictionaries for easier template usage
+            contracts = []
+            for row in contract_data:
+                contract_dict = {
+                    'contract_id': row[0],
+                    'post_id': row[1],
+                    'student_id': row[2],
+                    'employer_id': row[3],
+                    'status': row[4],
+                    'salary': row[5],
+                    'student_name': row[6],
+                    'shop_name': row[7],
+                    'start_date': row[8],
+                    'end_date': row[9]
+                }
+                contracts.append(contract_dict)
+        
+        return render(request, "student/view_contract.html", {
+            "contracts": contracts,
+            "student": student
+        })
+        
+    except Student.DoesNotExist:
+        messages.error(request, "Student profile not found. Please complete your registration.")
+        return redirect("student_registration")
+    except Exception as e:
+        messages.error(request, f"Error loading contracts: {str(e)}")
+        return render(request, "student/view_contract.html", {"contracts": []})

@@ -15,3 +15,15 @@ class Employer(models.Model):
     class Meta:
         db_table='employer'
 
+class Contract(models.Model):
+    contract_id=models.AutoField(primary_key=True)
+    post_id=models.CharField(max_length=45)
+    student_id=models.CharField(max_length=45)
+    employer_id=models.CharField(max_length=45)
+    status=models.CharField(max_length=45)
+    salary=models.CharField(max_length=5)
+    student_name=models.CharField(max_length=45)
+    shop_name=models.CharField(max_length=45)
+
+    class Meta:
+        db_table='contract'
