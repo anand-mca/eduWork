@@ -46,7 +46,17 @@ class Jobs(models.Model):
     class Meta:
         db_table = 'job_post'
 
+class JobHistory(models.Model):
+    log_id = models.AutoField(primary_key=True)
+    contract_id = models.CharField(max_length=45)
+    student_id = models.CharField(max_length=45)
+    employer_id = models.CharField(max_length=45)
+    join_date = models.DateField()
+    leaving_date = models.DateField()
+    total_salary = models.CharField(max_length=6)
 
+    class Meta:
+        db_table = 'job_history'
 
 
     

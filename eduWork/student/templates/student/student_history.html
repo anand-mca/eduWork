@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Job History - {{ student_info.name }}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.4);
+        }
+
+        .page-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(30, 58, 138, 0.1);
+        }
+
+        .student-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            margin-bottom: 2rem;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-info h2 {
+            color: #1e3a8a;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .student-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .summary-stats {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #d1d5db;
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value.earnings {
+            color: #059669;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .history-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .history-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .history-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .history-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .shop-name {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .employer-name {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .job-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .date-info {
+            text-align: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .date-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .date-value {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .salary-info {
+            background: linear-gradient(135deg, #0e75f4, #118fe3);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .salary-amount {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .salary-details {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 2px dashed #d1d5db;
+        }
+
+        .no-history h3 {
+            color: #6b7280;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-history p {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .achievement-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .experience-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .experience-beginner {
+            background: #ddd6fe;
+            color: #7c3aed;
+        }
+
+        .experience-intermediate {
+            background: #bfdbfe;
+            color: #2563eb;
+        }
+
+        .experience-experienced {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 1.875rem;
+            }
+            
+            .student-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .student-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .job-details {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'student_home' %}" class="back-button">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Dashboard
+        </a>
+
+        <h1 class="page-title">My Job History</h1>
+
+        <!-- Student Information Card -->
+        <div class="student-card">
+            {% if experience_summary.total_jobs > 5 %}
+                <div class="achievement-badge">Experienced Worker</div>
+            {% elif experience_summary.total_jobs > 2 %}
+                <div class="achievement-badge">Regular Worker</div>
+            {% elif experience_summary.total_jobs > 0 %}
+                <div class="achievement-badge">New Worker</div>
+            {% endif %}
+            
+            <div class="student-header">
+                <div class="student-info">
+                    <h2>{{ student_info.name }}</h2>
+                    {% if experience_summary.total_jobs > 10 %}
+                        <div class="experience-level experience-experienced">Highly Experienced</div>
+                    {% elif experience_summary.total_jobs > 5 %}
+                        <div class="experience-level experience-intermediate">Experienced</div>
+                    {% elif experience_summary.total_jobs > 0 %}
+                        <div class="experience-level experience-beginner">Beginner</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="student-details">
+                <div class="detail-item">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">{{ student_info.email }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-value">{{ student_info.phone }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Age</div>
+                    <div class="detail-value">{{ student_info.age }} years</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Skills</div>
+                    <div class="detail-value">{{ student_info.skills }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Address</div>
+                    <div class="detail-value">{{ student_info.address }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Summary Statistics -->
+        {% if experience_summary.total_jobs > 0 %}
+        <div class="summary-stats">
+            <div class="summary-title">Career Summary</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{ experience_summary.total_jobs }}</div>
+                    <div class="stat-label">Jobs Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ experience_summary.total_experience_days }}</div>
+                    <div class="stat-label">Days of Experience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ experience_summary.experience_months }}</div>
+                    <div class="stat-label">Months of Experience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value earnings">₹{{ experience_summary.total_earnings }}</div>
+                    <div class="stat-label">Total Earned</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ experience_summary.average_job_duration }}</div>
+                    <div class="stat-label">Avg Job Duration (Days)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value earnings">₹{{ experience_summary.average_daily_rate }}</div>
+                    <div class="stat-label">Avg Daily Rate</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Job History -->
+        <div class="history-section">
+            <h2 class="section-title">Work History</h2>
+            
+            {% if job_history %}
+            <div class="history-grid">
+                {% for job in job_history %}
+                <div class="history-card">
+                    <div class="job-header">
+                        <div>
+                            {% comment %} <div class="job-title">{{ job.job_title }}</div> {% endcomment %}
+                            <div class="shop-name">{{ job.shop_name }}</div>
+                            <div class="employer-name">Employer: {{ job.employer_name }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="job-details">
+                        <div class="date-info">
+                            <div class="date-label">Start Date</div>
+                            <div class="date-value">{{ job.join_date }}</div>
+                        </div>
+                        <div class="date-info">
+                            <div class="date-label">End Date</div>
+                            <div class="date-value">{{ job.leaving_date }}</div>
+                        </div>
+                        <div class="date-info">
+                            <div class="date-label">Duration</div>
+                            <div class="date-value">{{ job.working_days }} days</div>
+                        </div>
+                    </div>
+
+                    <div class="salary-info">
+                        <div class="salary-amount">₹{{ job.total_salary }}</div>
+                        <div class="salary-details">
+                            Total Earned • ₹{{ job.daily_rate }}/day average
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-history">
+                <h3>No work history yet</h3>
+                <p>Start applying for jobs to build your work experience and track your career progress here.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

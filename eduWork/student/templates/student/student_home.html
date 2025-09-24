@@ -339,7 +339,7 @@
             </a>
 
             <!-- Job History Card -->
-            <a href="#" class="feature-card" onclick="viewJobHistory()">
+            <a href="{% url 'student_history'%}" class="feature-card" onclick="viewJobHistory()">
                 <div class="card-icon">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -424,11 +424,11 @@
             alert('Job contract page coming soon!');
         } {% endcomment %}
 
-        function viewJobHistory() {
+        {% comment %} function viewJobHistory() {
             console.log('Viewing Job History');
             // Add job history logic here
             alert('Job history page coming soon!');
-        }
+        } {% endcomment %}
 
         function scheduleAcademy() {
             console.log('Scheduling Academy');

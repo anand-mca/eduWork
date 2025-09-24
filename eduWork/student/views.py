@@ -275,3 +275,117 @@ def view_contract(request):
     except Exception as e:
         messages.error(request, f"Error loading contracts: {str(e)}")
         return render(request, "student/view_contract.html", {"contracts": []})
+    
+def student_history(request):
+    """
+    View to display comprehensive job history for the logged-in student with statistics
+    """
+    if "username" not in request.session:
+        return redirect("login")
+    
+    logged_in_email = request.session.get("username")
+    
+    try:
+        # Get the current student's information
+        student = Student.objects.get(email_id=logged_in_email)
+        
+        with connection.cursor() as cursor:
+            # Get comprehensive job history for this student with job details
+            cursor.execute("""
+                SELECT jh.log_id, jh.contract_id, jh.student_id, jh.employer_id,
+                       jh.join_date, jh.leaving_date, jh.total_salary,
+                       jp.post_title, jp.shop_name, e.shop_name as employer_shop_name,
+                       e.o_name as employer_owner_name
+                FROM job_history jh
+                LEFT JOIN contract c ON jh.contract_id = c.contract_id
+                LEFT JOIN job_post jp ON c.post_id = jp.job_post_id
+                LEFT JOIN employer e ON jh.employer_id = e.email_id
+                WHERE jh.student_id = %s
+                ORDER BY jh.leaving_date DESC, jh.join_date DESC
+            """, [logged_in_email])
+            
+            history_data = cursor.fetchall()
+            
+            # Convert to list of dictionaries and calculate statistics
+            job_history = []
+            total_jobs = len(history_data)
+            total_experience_days = 0
+            total_earnings = 0
+            
+            for row in history_data:
+                # Calculate working days
+                join_date = row[4]
+                leaving_date = row[5]
+                if join_date and leaving_date:
+                    working_days = (leaving_date - join_date).days + 1
+                    total_experience_days += working_days
+                else:
+                    working_days = 0
+                
+                # Add to total earnings
+                try:
+                    salary = int(row[6]) if row[6] else 0
+                    total_earnings += salary
+                except (ValueError, TypeError):
+                    salary = 0
+                
+                history_dict = {
+                    'log_id': row[0],
+                    'contract_id': row[1],
+                    'student_id': row[2],
+                    'employer_id': row[3],
+                    'join_date': row[4],
+                    'leaving_date': row[5],
+                    'total_salary': row[6],
+                    'job_title': row[7] if row[7] else 'N/A',
+                    'shop_name': row[8] if row[8] else (row[9] if row[9] else 'N/A'),
+                    'employer_name': row[10] if row[10] else 'N/A',
+                    'working_days': working_days,
+                    'daily_rate': salary // working_days if working_days > 0 else 0,
+                    'end_date': row[5]  # For template compatibility
+                }
+                job_history.append(history_dict)
+            
+            # Calculate comprehensive summary statistics
+            experience_summary = {
+                'total_jobs': total_jobs,
+                'total_experience_days': total_experience_days,
+                'total_earnings': total_earnings,
+                'average_job_duration': total_experience_days // total_jobs if total_jobs > 0 else 0,
+                'average_daily_rate': total_earnings // total_experience_days if total_experience_days > 0 else 0,
+                'experience_months': round(total_experience_days / 30.44, 1) if total_experience_days > 0 else 0  # Convert to months
+            }
+            
+            # Prepare student info for display
+            student_info = {
+                'name': f"{student.f_name} {student.l_name}",
+                'email': student.email_id,
+                'phone': student.phone_no,
+                'skills': student.skill,
+                'age': student.age,
+                'address': student.address
+            }
+        
+        return render(request, "student/student_history.html", {
+            "student_info": student_info,
+            "job_history": job_history,
+            "experience_summary": experience_summary,
+            "student": student
+        })
+        
+    except Student.DoesNotExist:
+        messages.error(request, "Student profile not found. Please complete your registration.")
+        return redirect("student_registration")
+    except Exception as e:
+        messages.error(request, f"Error loading job history: {str(e)}")
+        return render(request, "student/student_history.html", {
+            "job_history": [],
+            "experience_summary": {
+                'total_jobs': 0,
+                'total_experience_days': 0,
+                'total_earnings': 0,
+                'average_job_duration': 0,
+                'average_daily_rate': 0,
+                'experience_months': 0
+            }
+        })
