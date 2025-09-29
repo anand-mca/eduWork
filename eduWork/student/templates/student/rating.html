@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rate Workspace - Student Portal</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .brand-section {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-title {
+      font-size: 1.875rem;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-subtitle {
+      color: #2563eb;
+      font-size: 0.875rem;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #1c2c40;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: #1c2c40;
+      text-align: left;
+    }
+
+    .star-rating {
+      direction: rtl;
+      unicode-bidi: bidi-override;
+      font-size: 2rem;
+      display: inline-flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: gold;
+    }
+  .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }  
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .char-count {
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: #666;
+      text-align: right;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    button {
+      border-radius: 12px;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 140px;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+    
+    .clear-btn {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #495057;
+      border: 2px solid #dee2e6;
+    }
+
+    .clear-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+      color: white;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .success-content {
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 2rem;
+      color: green;
+      margin-bottom: 10px;
+    }
+
+    .messages {
+      margin-bottom: 20px;
+    }
+
+    .messages .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .messages .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .messages .alert-error {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-section">
+    <h1 class="brand-title">Rate your workspace</h1>
+  </div>
+  <div class="container">
+    
+    <!-- Django Messages -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" class="rating-form">
+      {% csrf_token %}
+      
+      <!-- Hidden fields for contract and employer info -->
+      <input type="hidden" name="contract_id" value="{{ contract_id }}">
+      <input type="hidden" name="employer_id" value="{{ employer_id }}">
+      
+      <div class="rating-section">
+        <div class="star-rating">
+          <input type="radio" id="star5" name="rating" value="5" />
+          <label for="star5">★</label>
+          <input type="radio" id="star4" name="rating" value="4" />
+          <label for="star4">★</label>
+          <input type="radio" id="star3" name="rating" value="3" />
+          <label for="star3">★</label>
+          <input type="radio" id="star2" name="rating" value="2" />
+          <label for="star2">★</label>
+          <input type="radio" id="star1" name="rating" value="1" />
+          <label for="star1">★</label>
+        </div>
+      </div>
+      <div class="description-section">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="Share your thoughts about the workspace. What did you like? What could be improved?"
+          rows="5"
+          maxlength="500"
+        ></textarea>
+        <div class="char-count">Max 500 characters</div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Submit Rating</button>
+        <button type="reset" class="clear-btn">Clear Form</button>
+        <a href="{% url 'student_history'%}" class="submit-btn" style="text-decoration: none;">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    Back to History
+</a>
+      </div>
+    </form>
+  </div>
+
+  
+</body>
+</html>

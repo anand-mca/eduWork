@@ -288,6 +288,33 @@
             opacity: 0.9;
         }
 
+        .rating-btn {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .rate-button {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+        }
+
         .no-history {
             text-align: center;
             padding: 3rem 2rem;
@@ -387,48 +414,17 @@
         <h1 class="page-title">My Job History</h1>
 
         <!-- Student Information Card -->
-        <div class="student-card">
-            {% if experience_summary.total_jobs > 5 %}
-                <div class="achievement-badge">Experienced Worker</div>
-            {% elif experience_summary.total_jobs > 2 %}
-                <div class="achievement-badge">Regular Worker</div>
-            {% elif experience_summary.total_jobs > 0 %}
-                <div class="achievement-badge">New Worker</div>
-            {% endif %}
-            
+        <div class="student-card">            
             <div class="student-header">
                 <div class="student-info">
                     <h2>{{ student_info.name }}</h2>
-                    {% if experience_summary.total_jobs > 10 %}
+                    {% if experience_summary.total_jobs > 30 %}
                         <div class="experience-level experience-experienced">Highly Experienced</div>
-                    {% elif experience_summary.total_jobs > 5 %}
+                    {% elif experience_summary.total_jobs > 15 %}
                         <div class="experience-level experience-intermediate">Experienced</div>
                     {% elif experience_summary.total_jobs > 0 %}
                         <div class="experience-level experience-beginner">Beginner</div>
                     {% endif %}
-                </div>
-            </div>
-            
-            <div class="student-details">
-                <div class="detail-item">
-                    <div class="detail-label">Email</div>
-                    <div class="detail-value">{{ student_info.email }}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Phone</div>
-                    <div class="detail-value">{{ student_info.phone }}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Age</div>
-                    <div class="detail-value">{{ student_info.age }} years</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Skills</div>
-                    <div class="detail-value">{{ student_info.skills }}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Address</div>
-                    <div class="detail-value">{{ student_info.address }}</div>
                 </div>
             </div>
         </div>
@@ -476,7 +472,6 @@
                 <div class="history-card">
                     <div class="job-header">
                         <div>
-                            {% comment %} <div class="job-title">{{ job.job_title }}</div> {% endcomment %}
                             <div class="shop-name">{{ job.shop_name }}</div>
                             <div class="employer-name">Employer: {{ job.employer_name }}</div>
                         </div>
@@ -502,6 +497,16 @@
                         <div class="salary-details">
                             Total Earned • ₹{{ job.daily_rate }}/day average
                         </div>
+                    </div>
+                    
+                    <div class="rating-btn">
+                        <a href="{% url 'rate_workspace' %}?contract_id={{ job.contract_id }}&employer_id={{ job.employer_id }}" 
+                           class="rate-button">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            Rate Workspace
+                        </a>
                     </div>
                 </div>
                 {% endfor %}

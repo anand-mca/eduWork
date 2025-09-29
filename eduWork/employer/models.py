@@ -1,6 +1,5 @@
 from django.db import models
-from student.models import Jobs
-
+from student.models import Jobs,Message
 class Employer(models.Model):
     employer_id=models.AutoField(primary_key=True)
     o_name=models.CharField(max_length=45)
@@ -27,3 +26,15 @@ class Contract(models.Model):
 
     class Meta:
         db_table='contract'
+
+class Rating(models.Model):
+    rating_id = models.AutoField(primary_key=True)
+    student_id = models.CharField(max_length=45)
+    employer_id = models.CharField(max_length=45)
+    contract_id = models.CharField(max_length=45)
+    star = models.IntegerField()
+    description = models.CharField(max_length=500)
+    date_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'rating'

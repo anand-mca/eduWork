@@ -1,6 +1,8 @@
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 
+from django.utils import timezone
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -135,15 +137,23 @@ def apply_job(request):
         job_id = request.POST.get("job_id")  # hidden input from form
         job = get_object_or_404(Jobs, pk=job_id)
 
+        # Check if student has already applied for this job
+        if job.student_id:
+            # Convert comma-separated emails to list for checking
+            applied_emails = [email.strip() for email in job.student_id.split(',')]
+            if logged_in_email in applied_emails:
+                messages.warning(request, "You have already applied for this job.")
+                return redirect("apply_job")
+
+        # Check if vacancy is available
         if job.vacancy > 0:
-            # Append student email into student_id column
+            # Add student email to applicants list
             if job.student_id:  # already has some students
                 job.student_id += f", {logged_in_email}"
             else:
                 job.student_id = logged_in_email
 
-            # Decrement vacancy
-            job.vacancy -= 1
+            # Save the job (vacancy decrement removed - will be done when employer accepts)
             job.save()
             messages.success(request, "You have successfully applied for this job!")
         else:
@@ -151,7 +161,7 @@ def apply_job(request):
 
         return redirect("apply_job")  # reload page after applying
 
-    # GET request â†' show filtered jobs based on student skills
+    # GET request - show filtered jobs based on student skills
     try:
         # Get current student's skills
         student = Student.objects.get(email_id=logged_in_email)
@@ -187,6 +197,11 @@ def apply_job(request):
             # Convert to list of dictionaries for easier template usage
             filtered_jobs = []
             for row in job_data:
+                # Check if current student has already applied
+                student_emails = row[10].split(',') if row[10] else []
+                student_emails = [email.strip() for email in student_emails]
+                has_applied = logged_in_email in student_emails
+                
                 job_dict = {
                     'job_post_id': row[0],
                     'post_title': row[1],
@@ -200,7 +215,8 @@ def apply_job(request):
                     'end_date': row[9],
                     'student_id': row[10],
                     'salary': row[11],
-                    'employer_id': row[12]
+                    'employer_id': row[12],
+                    'has_applied': has_applied  # New field to track if student already applied
                 }
                 filtered_jobs.append(job_dict)
         
@@ -216,6 +232,13 @@ def apply_job(request):
         # Fallback to show all jobs if there's an error
         messages.warning(request, "Unable to filter jobs by skills. Showing all available jobs.")
         job_post = Jobs.objects.filter(vacancy__gt=0)
+        
+        # Add has_applied field for fallback jobs too
+        for job in job_post:
+            student_emails = job.student_id.split(',') if job.student_id else []
+            student_emails = [email.strip() for email in student_emails]
+            job.has_applied = logged_in_email in student_emails
+        
         return render(request, "student/apply_job.html", {"job_post": job_post})
 
 
@@ -389,3 +412,138 @@ def student_history(request):
                 'experience_months': 0
             }
         })
+def rate_workspace(request):
+    """
+    View to handle workspace rating functionality
+    """
+    if "username" not in request.session:
+        return redirect("login")
+    
+    logged_in_email = request.session.get("username")
+    
+    # Get contract_id and employer_id from URL parameters if provided
+    contract_id = request.GET.get('contract_id')
+    employer_id = request.GET.get('employer_id')
+    
+    if request.method == "POST":
+        # Get form data
+        rating = request.POST.get("rating")
+        description = request.POST.get("description", "")
+        contract_id = request.POST.get("contract_id", "")
+        employer_id = request.POST.get("employer_id", "")
+        
+        # Validate rating
+        if not rating or not rating.isdigit() or int(rating) < 1 or int(rating) > 5:
+            messages.error(request, "Please select a valid rating (1-5 stars).")
+            return render(request, "student/rating.html", {
+                'contract_id': contract_id,
+                'employer_id': employer_id
+            })
+        
+        try:
+            # Get student information
+            student = Student.objects.get(email_id=logged_in_email)
+            student_full_name = f"{student.f_name} {student.l_name}"
+            
+            # Insert rating into database
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO rating (student_id, employer_id, contract_id, star, description, date_time)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, [
+                    logged_in_email,
+                    employer_id,
+                    contract_id,
+                    int(rating),
+                    description,
+                    timezone.now()
+                ])
+            
+            messages.success(request, "Thank you! Your rating has been submitted successfully.")
+            return redirect("student_history")
+            
+        except Student.DoesNotExist:
+            messages.error(request, "Student profile not found.")
+            return redirect("student_registration")
+        except Exception as e:
+            messages.error(request, f"Error submitting rating: {str(e)}")
+            return render(request, "student/rating.html", {
+                'contract_id': contract_id,
+                'employer_id': employer_id
+            })
+    
+    # GET request - show rating form
+    return render(request, "student/rating.html", {
+        'contract_id': contract_id,
+        'employer_id': employer_id
+    })
+
+from django.db.models import Q
+from .models import Message
+
+def student_chat(request, employer_email):
+    """
+    Display chat between student and employer
+    """
+    if "username" not in request.session:
+        return redirect("login")
+    
+    logged_in_email = request.session.get("username")
+    
+    # Fetch ALL messages between this student and employer
+    chat_messages = Message.objects.filter(
+        Q(sender_id=logged_in_email, receiver_id=employer_email) |
+        Q(sender_id=employer_email, receiver_id=logged_in_email)
+    ).order_by('timestamp')
+    
+    # Get employer name
+    employer_name = employer_email.split('@')[0].title()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT o_name, shop_name FROM employer WHERE email_id = %s",
+                [employer_email]
+            )
+            employer_data = cursor.fetchone()
+            if employer_data:
+                employer_name = employer_data[1] if employer_data[1] else employer_data[0]
+    except:
+        pass
+    
+    context = {
+        'messages': chat_messages,
+        'current_user_id': logged_in_email,
+        'employer_id': employer_email,
+        'employer_name': employer_name,
+    }
+    
+    return render(request, 'student/chat.html', context)
+
+
+def send_message(request):
+    """
+    Handle sending messages
+    """
+    if "username" not in request.session:
+        return redirect("login")
+    
+    if request.method == 'POST':
+        sender_id = request.POST.get('sender_id')
+        receiver_id = request.POST.get('receiver_id')
+        message_text = request.POST.get('message_text')
+        
+        if sender_id and receiver_id and message_text:
+            try:
+                Message.objects.create(
+                    sender_id=sender_id,
+                    receiver_id=receiver_id,
+                    message_text=message_text.strip(),
+                    timestamp=timezone.now()
+                )
+                messages.success(request, 'Message sent!')
+            except Exception as e:
+                messages.error(request, f'Failed to send: {str(e)}')
+        
+        return redirect('student_chat', employer_email=receiver_id)
+    
+    return redirect('student_home')

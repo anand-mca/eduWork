@@ -357,10 +357,10 @@
                     <div class="stat-value">{{ experience_summary.total_experience_days }}</div>
                     <div class="stat-label">Days of Experience</div>
                 </div>
-                <div class="stat-item">
+                {% comment %} <div class="stat-item">
                     <div class="stat-value">₹{{ experience_summary.total_earnings }}</div>
                     <div class="stat-label">Total Earned</div>
-                </div>
+                </div> {% endcomment %}
                 <div class="stat-item">
                     <div class="stat-value">{{ experience_summary.average_job_duration }}</div>
                     <div class="stat-label">Avg Job Duration (Days)</div>
@@ -404,12 +404,12 @@
                         </div>
                     </div>
 
-                    <div class="salary-info">
+                    {% comment %} <div class="salary-info">
                         <div class="salary-amount">₹{{ job.total_salary }}</div>
                         <div class="salary-details">
                             Total Earned • ₹{{ job.daily_rate }}/day average
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
                 {% endfor %}
             </div>
