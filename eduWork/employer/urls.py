@@ -15,5 +15,8 @@ urlpatterns = [
     path("view_contract/", views.view_contract, name="view_contract"),
     path("terminate_contract/<int:contract_id>/", views.terminate_contract, name="terminate_contract"),
     path("view_history/", views.view_history, name="view_history"),
-
-    ]
+    path("view_log/", views.view_log, name="view_log"),
+    path("view_rating/", views.view_rating, name="view_rating"),
+    path('chat/<str:student_email>/', views.employer_chat, name='employer_chat'),
+    path('send-message/', views.employer_send_message, name='employer_send_message'),
+]

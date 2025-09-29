@@ -58,5 +58,22 @@ class JobHistory(models.Model):
     class Meta:
         db_table = 'job_history'
 
+from django.utils import timezone
+
+class Message(models.Model):
+    message_id = models.AutoField(primary_key=True)
+    sender_id = models.CharField(max_length=45)
+    receiver_id = models.CharField(max_length=45)
+    message_text = models.CharField(max_length=500)
+    timestamp = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        db_table = 'messaging'
+        ordering = ['timestamp']
+    
+    def __str__(self):
+        return f"Message from {self.sender_id} to {self.receiver_id}"
+
+
 
     
