@@ -546,6 +546,7 @@ def send_message(request):
         
         return redirect('student_chat', employer_email=receiver_id)
     
+<<<<<<< HEAD
     return redirect('student_home')
 
 from .models import Academic
@@ -631,3 +632,6 @@ def delete_schedule(request, academic_id):
             messages.error(request, f"Error deleting schedule: {str(e)}")
     
     return redirect("schedule_studies")
+=======
+    return redirect('student_home')
+>>>>>>> f1cea5a1854a01bd6e90329f65ae0ad9a6e88ddd

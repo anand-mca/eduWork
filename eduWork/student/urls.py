@@ -14,8 +14,11 @@ urlpatterns = [
     path("rate_workspace/", views.rate_workspace, name="rate_workspace"),
     path('chat/<str:employer_email>/', views.student_chat, name='student_chat'),
     path('send-message/', views.send_message, name='send_message'),
+<<<<<<< HEAD
     path('schedule-studies/', views.schedule_studies, name='schedule_studies'),
     path('delete-schedule/<int:academic_id>/', views.delete_schedule, name='delete_schedule'),
+=======
+>>>>>>> f1cea5a1854a01bd6e90329f65ae0ad9a6e88ddd
 ]
 
 

@@ -73,6 +73,7 @@ class Message(models.Model):
     
     def __str__(self):
         return f"Message from {self.sender_id} to {self.receiver_id}"
+<<<<<<< HEAD
     
 
 class Academic(models.Model):
@@ -88,5 +89,9 @@ class Academic(models.Model):
     
     def __str__(self):
         return f"Schedule for {self.student_id}: {self.start_date} to {self.end_date}"
+=======
+
+
+>>>>>>> f1cea5a1854a01bd6e90329f65ae0ad9a6e88ddd
 
     
