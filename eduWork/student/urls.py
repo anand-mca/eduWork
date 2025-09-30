@@ -14,6 +14,8 @@ urlpatterns = [
     path("rate_workspace/", views.rate_workspace, name="rate_workspace"),
     path('chat/<str:employer_email>/', views.student_chat, name='student_chat'),
     path('send-message/', views.send_message, name='send_message'),
+    path('schedule-studies/', views.schedule_studies, name='schedule_studies'),
+    path('delete-schedule/<int:academic_id>/', views.delete_schedule, name='delete_schedule'),
 ]
 
 

@@ -350,13 +350,13 @@
             </a>
 
             <!-- Schedule Academy Card -->
-            <a href="#" class="feature-card" onclick="scheduleAcademy()">
+            <a href="{% url 'schedule_studies' %}" class="feature-card" onclick="scheduleAcademy()">
                 <div class="card-icon">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <h3 class="card-title">Schedule Academy</h3>
+                <h3 class="card-title">Schedule Studies</h3>
                 <p class="card-description">Book training sessions and skill development courses</p>
             </a>
 
@@ -430,11 +430,11 @@
             alert('Job history page coming soon!');
         } {% endcomment %}
 
-        function scheduleAcademy() {
+        {% comment %} function scheduleAcademy() {
             console.log('Scheduling Academy');
             // Add academy scheduling logic here
             alert('Academy scheduling coming soon!');
-        }
+        } {% endcomment %}
 
         function viewFeedback() {
             console.log('Viewing Feedback');

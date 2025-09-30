@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Feedback</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+    .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
+
+    .brand-title {
+                font-size: 2.123rem;
+                font-weight: bold;
+                color: #1e3a8a;
+                margin-bottom: 0.5rem;
+            }
+    .brand-section {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    h1 {
+      color: #213547;
+      font-size: 2.2em;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: #213547;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 15px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 2px solid #e1e5e9;
+      resize: vertical;
+      font-family: inherit;
+      box-sizing: border-box;
+      background: #fff;
+      color: #213547;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #646cff;
+      box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    button {
+      border-radius: 12px;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 140px;
+      transition: all 0.3s ease;
+    }
+    .submit-btn {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .clear-btn {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #495057;
+      border: 2px solid #dee2e6;
+    }
+
+    .clear-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .read-the-docs {
+      margin-top: 30px;
+      color: #555;
+      font-size: 1em;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div>
+  <a href="{% url 'student_home'%}" class="back-button" >
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Dashboard
+        </a>
+  <div class="brand-section">
+      <h1 class="brand-title">User Feedback</h1>
+      <div class="form-group">
+  </div>
+  <div class="container">
+    <form method="POST" action="#">
+      <div class="form-group">
+        <label for="feedback">Share your feedback with us:</label>
+        <textarea id="feedback" name="feedback" placeholder="Your feedback helps us improve..." required></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+        <button type="reset" class="clear-btn">Clear Form</button>
+      </div>
+    </form>
+    <p class="read-the-docs">
+      Your feedback helps us improve our application and provide better user experience.
+    </p>
+  </div>
+</div>
+</body>
+</html>
