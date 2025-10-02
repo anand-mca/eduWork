@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('profile/', views.student_profile, name='student_profile'),
+    path('update_student/', views.update_student, name="update_student"),
     path("register/", views.student_registration, name="student_registration"),
     path("login/", views.login_view, name="login"),
     path("home/", views.student_home, name="student_home"),
@@ -13,12 +14,10 @@ urlpatterns = [
     path("student_history/", views.student_history, name="student_history"),
     path("rate_workspace/", views.rate_workspace, name="rate_workspace"),
     path('chat/<str:employer_email>/', views.student_chat, name='student_chat'),
-    path('send-message/', views.send_message, name='send_message'),
-<<<<<<< HEAD
-    path('schedule-studies/', views.schedule_studies, name='schedule_studies'),
-    path('delete-schedule/<int:academic_id>/', views.delete_schedule, name='delete_schedule'),
-=======
->>>>>>> f1cea5a1854a01bd6e90329f65ae0ad9a6e88ddd
+    path('send_message/', views.send_message, name='send_message'),
+    path('schedule_studies/', views.schedule_studies, name='schedule_studies'),
+    path('delete_schedule/<int:academic_id>/', views.delete_schedule, name='delete_schedule'),
+    path('post_feedback/', views.post_feedback, name='post_feedback'),
 ]
 
 

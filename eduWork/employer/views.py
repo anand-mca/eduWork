@@ -61,6 +61,110 @@ def employer_profile(request):
         employer = None
     return render(request, 'employer_profile.html', {'employer': employer})
 
+def update_employer(request):
+    """
+    Update employer profile - all fields are optional
+    """
+    if "username" not in request.session:
+        return redirect("employer_login")
+    
+    logged_in_email = request.session.get("username")
+    
+    if request.method == 'POST':
+        try:
+            # Get the employer object
+            employer = Employer.objects.get(email_id=logged_in_email)
+            
+            # Track if any field was updated
+            fields_updated = []
+            
+            # Update only the fields that have values
+            owner_name = request.POST.get('ownerName', '').strip()
+            if owner_name:
+                employer.o_name = owner_name
+                fields_updated.append('Owner Name')
+            
+            shop_name = request.POST.get('shopName', '').strip()
+            if shop_name:
+                employer.shop_name = shop_name
+                # Update session as well
+                request.session['shop_name'] = shop_name
+                fields_updated.append('Shop Name')
+            
+            category = request.POST.get('category', '').strip()
+            if category:
+                employer.category = category
+                fields_updated.append('Category')
+            
+            address = request.POST.get('address', '').strip()
+            if address:
+                employer.address = address
+                # Update session as well
+                request.session['address'] = address
+                fields_updated.append('Address')
+            
+            # Handle file upload
+            if 'shopLogo' in request.FILES:
+                photo = request.FILES['shopLogo']
+                employer.photo = photo.name
+                fields_updated.append('Shop Logo')
+            
+            phone = request.POST.get('phone', '').strip()
+            if phone:
+                employer.phone_no = phone
+                # Update session as well
+                request.session['phone_no'] = phone
+                fields_updated.append('Phone')
+            
+            location_link = request.POST.get('locationLink', '').strip()
+            if location_link:
+                employer.map_loc = location_link
+                # Update session as well
+                request.session['map_loc'] = location_link
+                fields_updated.append('Location Link')
+            
+            # Handle password update
+            password = request.POST.get('password', '').strip()
+            confirm_password = request.POST.get('confirmPassword', '').strip()
+            
+            if password or confirm_password:
+                if password != confirm_password:
+                    messages.error(request, "Passwords do not match!")
+                    return redirect('update_profile')
+                
+                if password:
+                    # Update password in login table
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "UPDATE login SET password = %s WHERE username = %s",
+                            [password, logged_in_email]
+                        )
+                    fields_updated.append('Password')
+            
+            # Save the employer object only if there were updates
+            if fields_updated:
+                employer.save()
+                messages.success(request, f"Profile updated successfully! Updated: {', '.join(fields_updated)}")
+            else:
+                messages.info(request, "No changes were made to your profile.")
+            
+            return redirect('employer_profile')
+            
+        except Employer.DoesNotExist:
+            messages.error(request, "Employer profile not found.")
+            return redirect('employer_login')
+        except Exception as e:
+            messages.error(request, f"Error updating profile: {str(e)}")
+            return redirect('update_profile')
+    
+    # GET request - display the form with current data
+    try:
+        employer = Employer.objects.get(email_id=logged_in_email)
+        return render(request, 'employer/profile_update.html', {'employer': employer})
+    except Employer.DoesNotExist:
+        messages.error(request, "Employer profile not found.")
+        return redirect('employer_login')
+
 def emp_login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -774,3 +878,41 @@ def employer_send_message(request):
         return redirect('employer_chat', student_email=receiver_id)
     
     return redirect('employer_home')
+
+from .models import Feedback
+from datetime import datetime
+
+def post_feedback(request):
+    """
+    View to handle employer feedback submission
+    """
+    if "username" not in request.session:
+        return redirect("employer_login")
+    
+    logged_in_email = request.session.get("username")
+    
+    if request.method == "POST":
+        feedback_text = request.POST.get("feedback")
+        
+        if feedback_text and feedback_text.strip():
+            try:
+                # Create new feedback entry
+                current_date = datetime.now().date()
+                current_time = datetime.now().time()
+                
+                Feedback.objects.create(
+                    feedback=feedback_text.strip(),
+                    date=current_date,
+                    time=current_time,
+                    u_id=logged_in_email
+                )
+                
+                messages.success(request, "Thank you for your feedback! It helps us improve EduWork.")
+                return redirect("employer_post_feedback")
+                
+            except Exception as e:
+                messages.error(request, f"Error submitting feedback: {str(e)}")
+        else:
+            messages.error(request, "Please enter your feedback before submitting.")
+    
+    return render(request, "employer/post_feedback.html")

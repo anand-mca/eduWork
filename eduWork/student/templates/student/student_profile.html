@@ -77,7 +77,7 @@
 
         .back-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
         }
 
         .profile-container {
@@ -309,18 +309,36 @@
             {% if student %}
                 <div class="profile-container">
                     <!-- Profile Photo Section -->
+                    <!-- Profile Photo Section -->
                     <div class="profile-photo-section">
                         {% if student.photo %}
-                            <img src="{{ student.photo }}" alt="Profile Photo" class="profile-photo">
+                            {% comment %} <img src="{{ student.photo }}" alt="Profile Photo" class="profile-photo"> {% endcomment %}
+                            <div class="no-photo">
+                                <svg width="80" height="80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
                         {% else %}
                             <div class="no-photo">
                                 <svg width="80" height="80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                             </div>
                         {% endif %}
                         <p class="photo-label">Profile Photo</p>
+
+                        <!-- Update Profile Button -->
+                        <a href="{% url 'update_student'%}" class="back-button" style="width:100%; justify-content:center; margin-top:1rem;">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3zM3 21h18"/>
+                            </svg>
+                            Update Profile
+                        </a>
                     </div>
+
 
                     <!-- Profile Details Section -->
                     <div class="profile-details">

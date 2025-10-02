@@ -27,6 +27,29 @@
             max-width: 28rem;
         }
 
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
+
         .brand-section {
             text-align: center;
             margin-bottom: 2rem;
@@ -373,13 +396,19 @@
 </head>
 <body>
     <div class="container">
+        <a href="http://127.0.0.1:8000/" class="back-button">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            eduWork™ Home
+        </a><br>
         <!-- Logo and Brand -->
         <div class="brand-section">
           {% comment %} <div class="logo">
               <img src="eduwork_logo.png" alt="EduWork Logo" />
           </div> {% endcomment %}
 
-            <h1 class="brand-title">EduWork</h1>
+            <h1 class="brand-title">EduWork™</h1>
             <p class="brand-subtitle">Earn While You Learn
 
             </p>
@@ -431,7 +460,7 @@
                             class="form-input password-input"
                             placeholder="Enter your password"
                         />
-                        <button type="submit" class="password-toggle" onclick="togglePassword()">
+                        <button type="button" class="password-toggle" onclick="showPassword()">
                             <svg id="eyeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -486,8 +515,13 @@
         </div>
     </div>
 
-    {% comment %} <script>
-        function togglePassword() {
+    <script>{%comment%}
+        function showPassword() {
+            const passwordInput = document.getElementById("password");
+            passwordInput.type = "text";  // show the password
+        }{% endcomment %}
+        
+        function showPassword() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
 
@@ -505,21 +539,6 @@
             }
         }
 
-        function selectUserType(type) {
-            console.log('Selected user type:', type);
-            // Add visual feedback
-            const buttons = document.querySelectorAll('.user-type-button');
-            buttons.forEach(btn => btn.style.backgroundColor = '#eff6ff');
-            event.target.style.backgroundColor = '#dbeafe';
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            console.log('Login attempt:', { username, password });
-            // Handle login logic here
-        });
-    </script> {% endcomment %}
+    </script>
 </body>
 </html>

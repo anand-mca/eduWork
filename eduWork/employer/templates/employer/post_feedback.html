@@ -189,7 +189,7 @@
 </head>
 <body>
 <div>
-  <a href="{% url 'student_home'%}" class="back-button" >
+  <a href="{% url 'employer_home' %}" class="back-button" >
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
@@ -200,14 +200,15 @@
       <div class="form-group">
   </div>
   <div class="container">
-    <form method="POST" action="#">
+    <form method="POST" action="{% url 'employer_post_feedback' %}">
+    {% csrf_token %}
       <div class="form-group">
         <label for="feedback">Share your feedback with us:</label>
         <textarea id="feedback" name="feedback" placeholder="Your feedback helps us improve..." required></textarea>
       </div>
       <div class="form-actions">
+        <button type="reset" class="clear-btn">Clear Form</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button type="submit" class="submit-btn">Submit Feedback</button>
-        <button type="reset" class="clear-btn">Clear Form</button>
       </div>
     </form>
     <p class="read-the-docs">

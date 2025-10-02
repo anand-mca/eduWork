@@ -21,7 +21,10 @@
       min-height: 100vh;
       padding-top: 60px;
     }
-
+    .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
     h1 {
       font-size: 1.875rem;
       font-weight: bold;
@@ -76,6 +79,25 @@
       font-family: 'Segoe UI';
       resize: vertical;
       min-height: 100px;
+    }
+    .clear-btn {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #495057;
+      border: 2px solid #dee2e6;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .clear-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .submit-btn {
@@ -140,7 +162,7 @@
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
@@ -150,13 +172,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            margin-bottom: 2rem;
         }
 
         .back-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
         }
-
     @media (max-width: 500px) {
       .announcement-box {
         padding: 20px;
@@ -165,10 +187,17 @@
   </style>
 </head>
 <body>
-
+<div class="container">
+        <a href="{%url 'employer_home' %}" class="back-button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Home Page
+            </a>
+  <center>
   <h1>Post Announcement</h1>
   <p class="subtitle" style="color: #2563eb;">Share the latest updates with your audience</p>
-
+  <br><br></center>
   <div class="announcement-box">
     <h2>What's the latest?</h2>
     <form id="announcementForm" method="POST">
@@ -179,25 +208,15 @@
         <textarea name="description" placeholder="Description" required></textarea>
       </div><br>
       <div>
-        <button type="submit" class="submit-btn">Post Announcement</button>
+        <button type="reset" class="clear-btn">Clear Form</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="submit-btn">Announce</button>
       </div>
-      <br>
-      <br>
-      <div>
-        <a href="{%url 'employer_home' %}" class="back-button">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
-                Back to Home Page
-            </a>
-      </div>
-      
     </form>
   </div>
 
   <div class="info-box">
     Provide a clear and concise title and description for your announcement.
   </div>
-
+</div>
 </body>
 </html>

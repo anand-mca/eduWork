@@ -32,7 +32,7 @@
         }
 
         .back-button {
-            background: #4f46e5;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -49,7 +49,8 @@
         }
 
         .back-button:hover {
-            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
             transform: translateY(-1px);
         }
 
@@ -365,8 +366,8 @@
 </head>
 <body>
     <div class="container">
-        <a href="{% url 'employer_home' %}" class="back-button">
-            ← Back to Dashboard
+        <a href="{% url 'post_job' %}" class="back-button">
+            ← Back to Job Posting
         </a>
         
         <h1 class="page-title">View Applications</h1>
@@ -439,9 +440,7 @@
         </div>
     </div>
 
-    <div class="success-message" id="successMessage">
-        <strong>Action Completed!</strong> Your action has been processed successfully.
-    </div>
+    
 
     <!-- <script>
         function showSuccessMessage(message = 'Action Completed!') {

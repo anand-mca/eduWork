@@ -25,7 +25,29 @@
             width: 100%;
             max-width: 32rem;
         }
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+    }
 
+    .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+            transform: translateY(-1px);
+            }
         .brand-section {
             text-align: center;
             margin-bottom: 2rem;
@@ -325,11 +347,17 @@
 </head>
 <body>
     <div class="container">
+        <a href="{% url 'employer_profile' %}" class="back-button">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Profile
+        </a>
         <!-- Logo and Brand -->
         <div class="brand-section">
-          <div class="logo">
+          {% comment %} <div class="logo">
               <img src="eduwork_logo.png" alt="EduWork Logo" />
-          </div>
+          </div> {% endcomment %}
             <h1 class="brand-title">EduWork™</h1>
             <p class="brand-subtitle">Earn While You Learn</p>
         </div>
@@ -337,48 +365,15 @@
         <!-- Registration Form -->
         <div class="registration-card">
             <div class="registration-header">
-                <h2 class="registration-title">Employer Registration</h2>
-                <p class="registration-subtitle">Register your profile @ EduWork</p>
+                <h2 class="registration-title">Update your profile</h2>
+                <p class="registration-subtitle">submit your latest profile</p>
             </div>
 
             <form id="registrationForm" action="" enctype="multipart/form-data" method="POST">
                 {% csrf_token %}
                 <!-- Owner name and shop name -->
-                <div class="form-group">
-                    <label for="ownerName" class="form-label">Owner Name</label>
-                    <div class="input-wrapper">
-                      <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                      </svg>
-                        <input
-                            id="ownerName"
-                            name="ownerName"
-                            type="text"
-                            required
-                            class="form-input"
-                            placeholder="Enter your name"
-                        />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="shopName" class="form-label">Shop Name</label>
-                    <div class="input-wrapper">
-                      <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l1-4h16l1 4M4 9h16v10a1 1 0 01-1 1H5a1 1 0 01-1-1V9zm5 4h2v3H9v-3z" />
-                      </svg>
-                        <input
-                            id="shopName"
-                            name="shopName"
-                            type="text"
-                            required
-                            class="form-input"
-                            placeholder="Enter your shop name"
-                        />
-                    </div>
-                </div>
-
                 <!-- category -->
-                <div class="form-group">
+                {% comment %} <div class="form-group">
                   <label for="category" class="form-label">Job Category</label>
                   <div class="input-wrapper">
                     <svg class="input-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -389,7 +384,6 @@
                     <select
                       id="category"
                       name="category"
-                      required
                       class="form-input">
                             <option value="">-- Select a category --</option>
                             <option value="cooking">Cooking</option>
@@ -402,27 +396,10 @@
                             <option value="farming">Farming</option>
                     </select>
                   </div>
-                </div>
+                </div> {% endcomment %}
 
 
                 <!-- Address -->
-                <div class="form-group">
-                    <label for="address" class="form-label">Address</label>
-                    <div class="input-wrapper">
-                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <input
-                            id="address"
-                            name="address"
-                            type="text"
-                            required
-                            class="form-input"
-                            placeholder="Enter your address"
-                        />
-                    </div>
-                </div>
 
                 <!-- Upload Shop Logo -->
                 <div class="form-group">
@@ -446,7 +423,6 @@
 
 
                 <!-- Phone and Email -->
-                <div class="form-row">
                     <div class="form-group">
                         <label for="phone" class="form-label">Phone</label>
                         <div class="input-wrapper">
@@ -457,29 +433,12 @@
                                 id="phone"
                                 name="phone"
                                 type="tel"
-                                required
                                 class="form-input"
                                 placeholder="Enter phone number"
                             />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <div class="input-wrapper">
-                            <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                required
-                                class="form-input"
-                                placeholder="Enter email address"
-                            />
-                        </div>
-                    </div>
-                </div>
+                    
                 <!-- Password and Confirm Password -->
                 <div class="form-row">
                     <div class="form-group">
@@ -495,7 +454,6 @@
                                 id="password"
                                 name="password"
                                 type="password"
-                                required
                                 class="form-input"
                                 placeholder="Enter password"
                             />
@@ -515,7 +473,6 @@
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 type="password"
-                                required
                                 class="form-input"
                                 placeholder="Confirm password"
                             />
@@ -540,7 +497,6 @@
                             id="locationLink"
                             name="locationLink"
                             type="text"
-                            required
                             class="form-input"
                             placeholder="Paste your map link"
                         />
@@ -554,12 +510,7 @@
             </form>
 
             <!-- Login Link -->
-            <div class="login-link-section">
-                <p class="text-sm text-gray-600">
-                    Already have an account?
-                    <a href="{% url 'employer_login' %}" class="login-link">Sign in here</a>
-                </p>
-            </div>
+            
         </div>
 
         <!-- Footer -->
@@ -569,12 +520,14 @@
     </div>
 
     <script>
-        
         // Password validation
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
+            if(password == ""){
+                return true;
+            }
             // Check if passwords match
             if (password !== confirmPassword) {
                 e.preventDefault();
@@ -627,7 +580,7 @@
             }
         });
 
-        
+
         // Real-time password strength indicator (optional)
         document.getElementById('password').addEventListener('input', function(e) {
             const password = e.target.value;
@@ -644,8 +597,6 @@
                 e.target.style.borderColor = '#d1d5db'; // default
             }
         });
-    
-
     </script>
 </body>
 </html>

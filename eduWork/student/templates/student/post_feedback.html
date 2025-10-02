@@ -200,7 +200,8 @@
       <div class="form-group">
   </div>
   <div class="container">
-    <form method="POST" action="#">
+    <form method="POST" action="{% url 'post_feedback' %}">
+    {% csrf_token %}
       <div class="form-group">
         <label for="feedback">Share your feedback with us:</label>
         <textarea id="feedback" name="feedback" placeholder="Your feedback helps us improve..." required></textarea>

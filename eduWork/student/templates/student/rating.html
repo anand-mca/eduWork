@@ -109,7 +109,7 @@
         .back-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
-        }  
+        } 
     textarea {
       width: 100%;
       padding: 15px;
@@ -246,10 +246,19 @@
   </style>
 </head>
 <body>
+  <div class="full">
+  <a href="{% url 'student_history'%}" class="back-button" style="text-decoration: none;">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    Back to History
+</a>
+<br><br>
   <div class="brand-section">
-    <h1 class="brand-title">Rate your workspace</h1>
+    <h1 class="brand-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate your workspace</h1>
   </div>
   <div class="container">
+    
     
     <!-- Django Messages -->
     {% if messages %}
@@ -295,18 +304,16 @@
         <div class="char-count">Max 500 characters</div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="submit-btn">Submit Rating</button>
+        
         <button type="reset" class="clear-btn">Clear Form</button>
-        <a href="{% url 'student_history'%}" class="submit-btn" style="text-decoration: none;">
-    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-    </svg>
-    Back to History
-</a>
+        <button type="submit" class="submit-btn">Submit Rating</button>
       </div>
     </form>
   </div>
 
-  
+</div>  
 </body>
 </html>
+
+
+

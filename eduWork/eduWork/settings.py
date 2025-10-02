@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'home',
     'student',
     'employer',
+    'adminapp',
 ]
 
 MIDDLEWARE = [

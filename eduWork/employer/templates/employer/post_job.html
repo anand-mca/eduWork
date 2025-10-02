@@ -21,7 +21,28 @@
             min-height: 100vh;
             padding: 60px 20px 40px;
         }
+        .back-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 60, 198, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
 
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
+        }
         h1 {
             font-size: 2.25rem;
             font-weight: bold;
@@ -191,7 +212,7 @@
             transform: translateY(0);
         }
 
-        .back-button {
+        .application-btn {
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: white;
             border: none;
@@ -210,7 +231,7 @@
             justify-content: center;
         }
 
-        .back-button:hover {
+        .application-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(8, 28, 130, 0.98);
         }
@@ -271,6 +292,13 @@
     </style>
 </head>
 <body>
+    <div class="container">
+        <a href="{% url 'employer_home' %}" class="back-button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Home Page
+            </a>
     <h1>Post Jobs</h1>
     <p class="subtitle">Create new job opportunities for students</p>
 
@@ -317,18 +345,13 @@
 
             <button type="submit" class="submit-btn">Post Job</button>
 
-            <a href="{% url 'view_applications' %}" class="back-button">
+            <a href="{% url 'view_applications' %}" class="application-btn">
                 View Applications
             </a> 
 
             <br><br>
             
-            <a href="{% url 'employer_home' %}" class="back-button">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
-                Back to Home Page
-            </a>
+            
             
         </form>
     </div>
@@ -337,6 +360,6 @@
         Provide detailed job information to attract the right candidates. Make sure to include clear requirements and expectations.
     </div>
 
-    
+    </div>
 </body>
 </html>

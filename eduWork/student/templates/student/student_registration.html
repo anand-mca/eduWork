@@ -341,7 +341,7 @@
           <div class="logo">
               <img src="eduwork_logo.png" alt="EduWork Logo" />
           </div>
-            <h1 class="brand-title">EduWork</h1>
+            <h1 class="brand-title">EduWork™</h1>
             <p class="brand-subtitle">Earn While You Learn</p>
         </div>
 
@@ -615,23 +615,45 @@
             <p class="footer-text">© 2025 EduWork. All rights reserved.</p>
         </div>
     </div>
-
-    {% comment %} <script>
+<script>
+        
+        // Password validation
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Get form data
-            const formData = new FormData(this);
-            const data = {};
-
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match! Please make sure both password fields are identical.');
+                return false;
             }
-
-            console.log('Registration data:', data);
-
-            // Here you would typically send the data to your server
-            alert('Registration successful! Welcome to EduWork.');
+            
+            // Check password requirements
+            if (password.length < 6) {
+                e.preventDefault();
+                alert('Password must be at least 6 characters long!');
+                return false;
+            }
+            
+            // Check for at least one letter
+            const hasLetter = /[a-zA-Z]/.test(password);
+            if (!hasLetter) {
+                e.preventDefault();
+                alert('Password must contain at least one letter!');
+                return false;
+            }
+            
+            // Check for at least one number
+            const hasNumber = /[0-9]/.test(password);
+            if (!hasNumber) {
+                e.preventDefault();
+                alert('Password must contain at least one number!');
+                return false;
+            }
+            
+            // If all validations pass, form will submit
+            return true;
         });
 
         // File upload preview
@@ -658,11 +680,31 @@
             if (age < 16) {
                 e.target.setCustomValidity('Age must be at least 16 years');
             } else if (age > 35) {
-                e.target.setCustomValidity('Age must be less than 35 years');
+                e.target.setCustomValidity('Age must be less than or equal to 35 years');
             } else {
                 e.target.setCustomValidity('');
             }
         });
-    </script> {% endcomment %}
+
+        // Real-time password strength indicator (optional)
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const isLongEnough = password.length >= 6;
+            
+            // You can add visual feedback here if needed
+            if (isLongEnough && hasLetter && hasNumber) {
+                e.target.style.borderColor = '#10b981'; // green
+            } else if (password.length > 0) {
+                e.target.style.borderColor = '#f59e0b'; // orange
+            } else {
+                e.target.style.borderColor = '#d1d5db'; // default
+            }
+        });
+    
+
+    </script>
+    
 </body>
 </html>

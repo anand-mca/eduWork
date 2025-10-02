@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Profile</title>
+</head>
+<body>
+    <h1>My Profile</h1>
+
+    {% if student %}
+        <p><strong>ID:</strong> {{ student.student_id }}</p>
+        <p><strong>Name:</strong> {{ student.f_name }} {{ student.l_name }}</p>
+        <p><strong>Age:</strong> {{ student.age }}</p>
+        <p><strong>Skill:</strong> {{ student.skill }}</p>
+        <p><strong>DOB:</strong> {{ student.dob }}</p>
+        <p><strong>Gender:</strong> {{ student.gender }}</p>
+        <p><strong>Address:</strong> {{ student.address }}</p>
+        <p><strong>Phone:</strong> {{ student.phone_no }}</p>
+        <p><strong>Email:</strong> {{ student.email_id }}</p>
+
+        {% if student.photo %}
+            <img src="{{ student.photo }}" alt="Profile Photo" width="150">
+        {% endif %}
+    {% else %}
+        <p>No student data found.</p>
+    {% endif %}
+</body>
+</html>
